@@ -1,0 +1,11 @@
+rrbot:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Position Controllers ---------------------------------------
+  joint2_torque_controller:
+    type: effort_controllers/JointEffortController
+    joint: joint2
+    pid: {p: 100.0, i: 0.01, d: 10.0}
