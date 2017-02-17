@@ -72,8 +72,17 @@ grid on
 view([0,0,1])
 
 for i=1:2:n-1
+
+
     a_draw_animation(theta(i));
 end
 
 print('end');
+
+
+% aa
+
+
+
+
 
