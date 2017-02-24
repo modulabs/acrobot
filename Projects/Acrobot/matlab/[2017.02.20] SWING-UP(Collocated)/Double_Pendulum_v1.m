@@ -23,68 +23,68 @@ t = 0:dt:30;   %time
 n = length(t);
 
 %matrix
-D2_theta1 = zeros(1,n);
-D_theta1 = zeros(1,n);
-theta1 = zeros(1,n);
+ddq1 = zeros(1,n);
+dq1 = zeros(1,n);
+q1 = zeros(1,n);
 
-D2_theta2 = zeros(1,n);
-D_theta2 = zeros(1,n);
-theta2 = zeros(1,n);
+ddq2 = zeros(1,n);
+dq2 = zeros(1,n);
+q2 = zeros(1,n);
 
 %% Initial Condition
-theta1(1) = -45*(pi/180);   %radian
-D_theta1(1) = 0*(pi/180);
+q1(1) = -45*(pi/180);   %radian
+dq1(1) = 0*(pi/180);
 
-theta2(1) = 0*(pi/180);
-D_theta2(1) = 0*(pi/180);
+q2(1) = 0*(pi/180);
+dq2(1) = 0*(pi/180);
 
 alpha = 200;
 
-des_d2q2 = 0;
-des_d1q2 = 0;
+des_ddq2 = 0;
+des_dq2 = 0;
 % des_q2 = 0;   %radian
 
 kp = 10;
 kd = 10;
 
 for i=1 : 1 : n-1 
-M = [((1/3)*m1*l1^2+m2*l1^2+(1/3)*m2*l2^2+m2*l1*l2*cos(theta2(i)))   ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(theta2(i)));
-             ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(theta2(i)))                     ((1/3)*m2*l2^2)                   ];
- 
-H = [(-0.5)*m2*l1*l2*sin(theta2(i))*D_theta1(i)*D_theta1(i) + (-m2)*l1*l2*(sin(theta2(i)))*D_theta1(i)*D_theta2(i);
-                           0.5*m2*l1*l2*sin(theta2(i))*D_theta1(i)*D_theta1(i)                                   ];
-                      
-P = [((0.5*m1)+m2)*g*l1*cos(theta1(i))+0.5*m2*g*l2*cos(theta1(i)+theta2(i));
-                   0.5*m2*g*l2*cos(theta1(i)+theta2(i))                   ];
+    M = [((1/3)*m1*l1^2+m2*l1^2+(1/3)*m2*l2^2+m2*l1*l2*cos(q2(i)))   ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(q2(i)));
+                 ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(q2(i)))                     ((1/3)*m2*l2^2)                   ];
 
-               
-M22_bar = M(2,2) - M(2,1)*inv(M(1,1))*M(1,2);
-h2_bar = H(2) - M(2,1)*inv(M(1,1))*H(1);
-pi2_bar = P(2) - M(2,1)*inv(M(1,1))*P(1);
+    H = [(-0.5)*m2*l1*l2*sin(q2(i))*dq1(i)*dq1(i) + (-m2)*l1*l2*(sin(q2(i)))*dq1(i)*dq2(i);
+                               0.5*m2*l1*l2*sin(q2(i))*dq1(i)*dq1(i)                                   ];
 
-des_q2 = 2*alpha/pi*atan(D_theta1(i)*pi/180);   %radian
-v2 = des_d2q2 + kd*(des_d1q2-D_theta2(i)) + kp*(des_q2-theta2(i));
-T1 = 0;
-T2 = M22_bar*v2 + h2_bar + pi2_bar;
+    P = [((0.5*m1)+m2)*g*l1*cos(q1(i))+0.5*m2*g*l2*cos(q1(i)+q2(i));
+                       0.5*m2*g*l2*cos(q1(i)+q2(i))                   ];
 
-T = [T1;T2];
 
-D2 = inv(M) * (T - H - P);
+    M22_bar = M(2,2) - M(2,1)*inv(M(1,1))*M(1,2);
+    h2_bar = H(2) - M(2,1)*inv(M(1,1))*H(1);
+    pi2_bar = P(2) - M(2,1)*inv(M(1,1))*P(1);
 
-D2_theta1(i+1) = D2(1);
-D2_theta2(i+1) = D2(2);
+    des_q2 = 2*alpha/pi*atan(dq1(i)*pi/180);   %radian
+    v2 = des_ddq2 + kd*(des_dq2-dq2(i)) + kp*(des_q2-q2(i));
+    T1 = 0;
+    T2 = M22_bar*v2 + h2_bar + pi2_bar;
 
-%Euler method
-D_theta1(i+1) = D_theta1(i) + dt*D2_theta1(i+1);
-theta1(i+1) = theta1(i) + dt*D_theta1(i);
+    T = [T1;T2];
 
-D_theta2(i+1) = D_theta2(i) + dt*D2_theta2(i+1);
-theta2(i+1) = theta2(i) + dt*D_theta2(i);
+    D2 = inv(M) * (T - H - P);
+
+    ddq1(i+1) = D2(1);
+    ddq2(i+1) = D2(2);
+
+    %Euler method
+    dq1(i+1) = dq1(i) + dt*ddq1(i+1);
+    q1(i+1) = q1(i) + dt*dq1(i);
+
+    dq2(i+1) = dq2(i) + dt*ddq2(i+1);
+    q2(i+1) = q2(i) + dt*dq2(i);
     
 end
 
 % figure(1);
-% plot(t,theta1*180/pi,t,theta2*180/pi);
+% plot(t,q1*180/pi,t,q2*180/pi);
 % legend('th1','th2');
 % grid on
 
@@ -113,11 +113,11 @@ grid on;
 
 for i = 1 : 5 : n
 
-x1 = l1*cos(theta1(i));
-y1 = l1*sin(theta1(i));
+x1 = l1*cos(q1(i));
+y1 = l1*sin(q1(i));
 
-x2 = x1+l2*cos(theta1(i)+theta2(i));
-y2 = y1+l2*sin(theta1(i)+theta2(i));
+x2 = x1+l2*cos(q1(i)+q2(i));
+y2 = y1+l2*sin(q1(i)+q2(i));
 
     % ========= LOWER LINK ==========    
     Ax = [0,x1];
