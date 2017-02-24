@@ -22,21 +22,12 @@ dt = 0.001;    %time step
 t = 0:dt:30;   %time
 n = length(t);
 
-%matrix
-ddq1 = zeros(1,n);
-dq1 = zeros(1,n);
-q1 = zeros(1,n);
-
-ddq2 = zeros(1,n);
-dq2 = zeros(1,n);
-q2 = zeros(1,n);
-
 %% Initial Condition
-q1(1) = -45*(pi/180);   %radian
-dq1(1) = 0*(pi/180);
+q = deg2rad([-45; 0]);%radian
+dq = deg2rad([0; 0]);
+ddq = zeros(2,1);
 
-q2(1) = 0*(pi/180);
-dq2(1) = 0*(pi/180);
+q_traj = q;
 
 alpha = 200;
 
@@ -48,38 +39,32 @@ kp = 10;
 kd = 10;
 
 for i=1 : 1 : n-1 
-    M = [((1/3)*m1*l1^2+m2*l1^2+(1/3)*m2*l2^2+m2*l1*l2*cos(q2(i)))   ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(q2(i)));
-                 ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(q2(i)))                     ((1/3)*m2*l2^2)                   ];
+    M = [((1/3)*m1*l1^2+m2*l1^2+(1/3)*m2*l2^2+m2*l1*l2*cos(q(2)))   ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(q(2)));
+                 ((1/3)*m2*l2^2+0.5*m2*l1*l2*cos(q(2)))                     ((1/3)*m2*l2^2)                   ];
 
-    H = [(-0.5)*m2*l1*l2*sin(q2(i))*dq1(i)*dq1(i) + (-m2)*l1*l2*(sin(q2(i)))*dq1(i)*dq2(i);
-                               0.5*m2*l1*l2*sin(q2(i))*dq1(i)*dq1(i)                                   ];
+    H = [(-0.5)*m2*l1*l2*sin(q(2))*dq(1)*dq(1) + (-m2)*l1*l2*(sin(q(2)))*dq(1)*dq(2);
+                               0.5*m2*l1*l2*sin(q(2))*dq(1)*dq(1)                                   ];
 
-    P = [((0.5*m1)+m2)*g*l1*cos(q1(i))+0.5*m2*g*l2*cos(q1(i)+q2(i));
-                       0.5*m2*g*l2*cos(q1(i)+q2(i))                   ];
+    P = [((0.5*m1)+m2)*g*l1*cos(q(1))+0.5*m2*g*l2*cos(q(1)+q(2));
+                       0.5*m2*g*l2*cos(q(1)+q(2))                   ];
 
 
     M22_bar = M(2,2) - M(2,1)*inv(M(1,1))*M(1,2);
     h2_bar = H(2) - M(2,1)*inv(M(1,1))*H(1);
     pi2_bar = P(2) - M(2,1)*inv(M(1,1))*P(1);
 
-    des_q2 = 2*alpha/pi*atan(dq1(i)*pi/180);   %radian
-    v2 = des_ddq2 + kd*(des_dq2-dq2(i)) + kp*(des_q2-q2(i));
-    T1 = 0;
-    T2 = M22_bar*v2 + h2_bar + pi2_bar;
+    des_q2 = 2*alpha/pi*atan(dq(1)*pi/180);   %radian
+    v2 = des_ddq2 + kd*(des_dq2-dq(2)) + kp*(des_q2-q(2));
+    
+    tau = [0; M22_bar*v2 + h2_bar + pi2_bar];
 
-    T = [T1;T2];
+    ddq = inv(M) * (tau - H - P);
 
-    D2 = inv(M) * (T - H - P);
-
-    ddq1(i+1) = D2(1);
-    ddq2(i+1) = D2(2);
-
-    %Euler method
-    dq1(i+1) = dq1(i) + dt*ddq1(i+1);
-    q1(i+1) = q1(i) + dt*dq1(i);
-
-    dq2(i+1) = dq2(i) + dt*ddq2(i+1);
-    q2(i+1) = q2(i) + dt*dq2(i);
+    % Euler method
+    dq = dq + dt*ddq;
+    q = q + dt*dq;
+    
+    q_traj = [q_traj q];
     
 end
 
@@ -113,11 +98,11 @@ grid on;
 
 for i = 1 : 5 : n
 
-x1 = l1*cos(q1(i));
-y1 = l1*sin(q1(i));
+    x1 = l1*cos(q_traj(1,i));
+    y1 = l1*sin(q_traj(1,i));
 
-x2 = x1+l2*cos(q1(i)+q2(i));
-y2 = y1+l2*sin(q1(i)+q2(i));
+    x2 = x1+l2*cos(q_traj(1,i)+q_traj(2,i));
+    y2 = y1+l2*sin(q_traj(1,i)+q_traj(2,i));
 
     % ========= LOWER LINK ==========    
     Ax = [0,x1];
@@ -135,10 +120,3 @@ y2 = y1+l2*sin(q1(i)+q2(i));
 
     drawnow
 end
-
-
-
-
-
-
-
