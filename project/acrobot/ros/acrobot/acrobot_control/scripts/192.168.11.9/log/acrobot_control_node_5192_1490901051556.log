@@ -1,0 +1,26 @@
+[rospy.client][INFO] 2017-03-30 15:10:51,590: init_node, name[/acrobot_control_node_5192_1490901051556], pid[5192]
+[xmlrpc][INFO] 2017-03-30 15:10:51,590: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2017-03-30 15:10:51,591: Started XML-RPC server [http://hancheol:38384/]
+[rospy.impl.masterslave][INFO] 2017-03-30 15:10:51,591: _ready: http://hancheol:38384/
+[rospy.init][INFO] 2017-03-30 15:10:51,591: ROS Slave URI: [http://hancheol:38384/]
+[rospy.registration][INFO] 2017-03-30 15:10:51,592: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2017-03-30 15:10:51,593: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2017-03-30 15:10:51,693: registered with master
+[rospy.rosout][INFO] 2017-03-30 15:10:51,693: initializing /rosout core topic
+[rospy.rosout][INFO] 2017-03-30 15:10:51,697: connected to core topic /rosout
+[rospy.simtime][INFO] 2017-03-30 15:10:51,701: initializing /clock core topic
+[rospy.simtime][INFO] 2017-03-30 15:10:51,705: connected to core topic /clock
+[rospy.internal][INFO] 2017-03-30 15:10:51,708: topic[/clock] adding connection to [http://hancheol:37762/], count 0
+[rospy.internal][INFO] 2017-03-30 15:10:51,908: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.core][INFO] 2017-03-30 15:10:56,396: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2017-03-30 15:10:56,402: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2017-03-30 15:10:56,404: topic[/clock] removing connection to http://hancheol:37762/
+[rospy.impl.masterslave][INFO] 2017-03-30 15:10:56,404: signal-2
+[rospy.internal][ERROR] 2017-03-30 15:10:56,408: Traceback (most recent call last):
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 729, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 103, in recv_buff
+    d = sock.recv(buff_size)
+error: [Errno 104] Connection reset by peer
+
+[rospy.core][INFO] 2017-03-30 15:10:56,569: signal_shutdown [atexit]

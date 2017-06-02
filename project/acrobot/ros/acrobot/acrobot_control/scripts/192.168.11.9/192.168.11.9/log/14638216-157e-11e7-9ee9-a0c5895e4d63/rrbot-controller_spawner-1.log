@@ -1,0 +1,38 @@
+[rospy.client][INFO] 2017-03-30 15:21:48,553: init_node, name[/rrbot/controller_spawner], pid[6073]
+[xmlrpc][INFO] 2017-03-30 15:21:48,553: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2017-03-30 15:21:48,554: Started XML-RPC server [http://hancheol:34354/]
+[rospy.init][INFO] 2017-03-30 15:21:48,554: ROS Slave URI: [http://hancheol:34354/]
+[rospy.impl.masterslave][INFO] 2017-03-30 15:21:48,554: _ready: http://hancheol:34354/
+[rospy.registration][INFO] 2017-03-30 15:21:48,555: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2017-03-30 15:21:48,555: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2017-03-30 15:21:48,654: registered with master
+[rospy.rosout][INFO] 2017-03-30 15:21:48,655: initializing /rosout core topic
+[rospy.rosout][INFO] 2017-03-30 15:21:48,657: connected to core topic /rosout
+[rospy.simtime][INFO] 2017-03-30 15:21:48,663: initializing /clock core topic
+[rospy.simtime][INFO] 2017-03-30 15:21:48,667: connected to core topic /clock
+[rospy.internal][INFO] 2017-03-30 15:21:48,672: topic[/clock] adding connection to [http://hancheol:39089/], count 0
+[rosout][INFO] 2017-03-30 15:21:48,674: Controller Spawner: Waiting for service controller_manager/load_controller
+[rosout][INFO] 2017-03-30 15:21:48,682: Controller Spawner: Waiting for service controller_manager/switch_controller
+[rosout][INFO] 2017-03-30 15:21:48,685: Controller Spawner: Waiting for service controller_manager/unload_controller
+[rosout][INFO] 2017-03-30 15:21:48,689: Loading controller: joint_state_controller
+[rosout][INFO] 2017-03-30 15:21:48,774: Loading controller: joint2_torque_controller
+[rosout][INFO] 2017-03-30 15:21:48,864: Controller Spawner: Loaded controllers: joint_state_controller, joint2_torque_controller
+[rosout][INFO] 2017-03-30 15:21:48,867: Started controllers: joint_state_controller, joint2_torque_controller
+[rospy.internal][INFO] 2017-03-30 15:21:48,937: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.core][INFO] 2017-03-30 15:21:57,993: signal_shutdown [signal-2]
+[rosout][INFO] 2017-03-30 15:21:57,993: Shutting down spawner. Stopping and unloading controllers...
+[rosout][INFO] 2017-03-30 15:21:58,998: Stopping all controllers...
+[rosout][INFO] 2017-03-30 15:21:59,002: Unloading all loaded controllers...
+[rosout][INFO] 2017-03-30 15:21:59,003: Trying to unload joint2_torque_controller
+[rosout][INFO] 2017-03-30 15:21:59,013: Succeeded in unloading joint2_torque_controller
+[rosout][INFO] 2017-03-30 15:21:59,013: Trying to unload joint_state_controller
+[rosout][INFO] 2017-03-30 15:21:59,019: Succeeded in unloading joint_state_controller
+[rospy.internal][INFO] 2017-03-30 15:21:59,028: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2017-03-30 15:21:59,029: topic[/clock] removing connection to http://hancheol:39089/
+[rospy.impl.masterslave][INFO] 2017-03-30 15:21:59,029: signal-2
+[rospy.internal][WARNING] 2017-03-30 15:21:59,031: Unknown error initiating TCP/IP socket to hancheol:51630 (http://hancheol:39089/): Traceback (most recent call last):
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.core][INFO] 2017-03-30 15:21:59,146: signal_shutdown [atexit]
