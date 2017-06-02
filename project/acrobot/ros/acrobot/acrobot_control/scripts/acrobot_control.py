@@ -16,6 +16,7 @@ def error_state(qd, q):
         dq = dq + 2*pi
     return dq
 
+
 class Acrobot:
     _m = (1,2)
     _l = (1,2)
@@ -44,6 +45,7 @@ class Acrobot:
 
         c = cos(q[0:2,:])
         s = sin(q[0:2,:])
+
         s12 = sin(q.item(0)+q.item(1))
 
         h12 = I2 + m2l1lc2*c.item(1)
