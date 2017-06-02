@@ -54,6 +54,7 @@ class Acrobot:
                 [m2l1lc2*s.item(1)*qd.item(0), 0] ])
         
         G = g*array([[ m1*lc1*s.item(0) + m2*(l1*s.item(1)+lc2*s12)],
+
             [m2*lc2*s12] ])
             
         # accumate total C and add a damping term:
@@ -127,6 +128,7 @@ def acrobot_control_publisher():
         t = t + 1
 
         pub2.publish(u)
+
 
         i = i+1 #increment i
 
