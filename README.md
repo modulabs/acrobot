@@ -2,4 +2,4 @@
 GangnamDynamics Lab
 
 
-Hello world
+http://www.modulabs.co.kr/Dynamics

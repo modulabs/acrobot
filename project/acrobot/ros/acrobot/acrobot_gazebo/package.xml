@@ -1,9 +1,7 @@
-<?xml version="1.0"?>
 <package>
-  <name>acrobot_description</name>
-  <version>0.0.0</version>
-  <description>The acrobot_description package</description>
-
+  <name>acrobot_gazebo</name>
+  <version>0.1.0</version>
+  <description>acrobot_gazebo</description>
   <maintainer email="GangnamDynamics@googlegroups.com">GangnamDynamics</maintainer>
 
   <license>BSD</license>
@@ -16,9 +14,12 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <run_depend>joint_state_publisher</run_depend>
-  <run_depend>robot_state_publisher</run_depend>
-  <run_depend>rviz</run_depend>
+  <run_depend>gazebo_plugins</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>gazebo_ros_control</run_depend>
+  <run_depend>acrobot_control</run_depend>
+  <run_depend>acrobot_description</run_depend>
+  <run_depend>xacro</run_depend>
 
   <export>
   </export>

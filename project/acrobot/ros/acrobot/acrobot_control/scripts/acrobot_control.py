@@ -16,7 +16,6 @@ def error_state(qd, q):
         dq = dq + 2*pi
     return dq
 
-
 class Acrobot:
     _m = (1,2)
     _l = (1,2)
@@ -72,7 +71,7 @@ def listen_joint_state(joint_state, (q, qd)):
     qd[1] = joint_state.velocity[1]
     # rospy.loginfo(rospy.get_caller_id() + ', q=(%f, %f)', q[0], q[1]) #, q[1])
 
-#Define a RRBot joint positions publisher for joint controllers.
+# acrobot pfl, lqr controller
 def acrobot_control_publisher():
     acrobot = Acrobot((0.171, 0.289), (0.37779, 0.3882), (0.27948, 0.32843), (0.0027273, 0.0033484), (0.01, 0.01))
 
@@ -91,18 +90,18 @@ def acrobot_control_publisher():
     rospy.init_node('acrobot_control_node', anonymous=True)
 
     #Define publishers for each joint position controller commands.
-    rospy.Subscriber('/rrbot/joint_states', JointState, listen_joint_state, (q, q_dot) )
-    pub2 = rospy.Publisher('/rrbot/joint2_torque_controller/command', Float64, queue_size=10)
+    rospy.Subscriber('/acrobot/joint_states', JointState, listen_joint_state, (q, q_dot) )
+    pub2 = rospy.Publisher('/acrobot/joint2_torque_controller/command', Float64, queue_size=10)
 
     rate = rospy.Rate(100) #100 Hz
 
-    #While loop to have joints follow a certain position, while rospy is not shutdown.
+    # While loop to have joints follow a certain position, while rospy is not shutdown.
     i = 0
     t = 0
     controller = 'swing up'
     while not rospy.is_shutdown():
 
-        if abs(q[0]) < 0.5 and abs(q[1]) < 0.5 :
+        if abs(q[0]) < 0.5 and abs(q[1]) < 0.5 : # have to implement region of attraction later
             controller = 'lqr'
 
         if controller == 'swing up':
@@ -114,13 +113,11 @@ def acrobot_control_publisher():
             
             des_q2 = 2*alpha/pi*atan(q_dot[0])     
 
-
             v2 = des_q2_ddot + kd*(des_q2_dot - q_dot[1]) + kp*error_state(des_q2, q[1])
-
             
             u = H22_bar*v2 + C2_bar
         else:
-            K = array([-650.4009, -289.0746, -287.1833, -140.0615])
+            K = array([-650.4009, -289.0746, -287.1833, -140.0615]) # update automatically calculate K
             u = -K.dot(array([[q.item(0)], [q_dot.item(0)], [q.item(1)], [q_dot.item(1)]]))
             rospy.loginfo(rospy.get_caller_id() + 'lqr')
 

@@ -2,17 +2,17 @@
 <package>
   <name>acrobot_control</name>
   <version>0.0.0</version>
-  <description>The rrbot_control package</description>
+  <description>acrobot_control package</description>
 
-  <maintainer email="davetcoleman@gmail.com">Dave Coleman</maintainer>
+  <maintainer email="GangnamDynamics@googlegroups.com">GangnamDynamics</maintainer>
 
   <license>BSD</license>
 
-  <url type="website">http://http://gazebosim.org/w/index.php?title=Tutorials/1.9/Using_A_URDF_In_Gazebo</url>
-  <url type="bugtracker">https://github.com/osrf/gazebo_ros_demos/issues</url>
-  <url type="repository">https://github.com/osrf/gazebo_ros_demos</url>
+  <url type="website">http://www.modulabs.co.kr/Dynamics</url>
+  <url type="bugtracker"></url>
+  <url type="repository">https://github.com/modulabs/GangnamDynamics</url>
 
-  <author email="davetcoleman@gmail.com">Dave Coleman</author>
+  <author email="GangnamDynamics@googlegroups.com">GangnamDynamics</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
