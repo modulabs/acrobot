@@ -24,8 +24,8 @@ struct Link
 	float I;
 
 	Link() {}
-	Link(float _m, float _l, float _lc, float _Ic, float _b, float _I )
-		: m(_m), l(_l), lc(_lc), Ic(_Ic), b(_b), I(_Ic) {}
+	Link(float _m, float _l, float _lc, float _Ic, float _b, float _I = 0.f)
+		: m(_m), l(_l), lc(_lc), Ic(_Ic), b(_b), I(_Ic+_m*_lc*_lc) {}
 };
 
 class Acrobot
@@ -42,7 +42,7 @@ private: // variables
 	Matrix2f matH; // 2x2 matrix
 	Matrix2f matC; // 2x2 matrix
 
-	Vector2f vecC; // 2x2 matrixu: 1.03981
+	Vector2f vecC; // 2x2 matrix
 	Vector2f vecG; // 2 column vector
 	Vector2f vecB; // 2 column vector
 	Vector2f vecP; // 2 column vector
@@ -65,22 +65,24 @@ private: // functions
 		//   H(q)q_ddot + C(q,q_dot)q_dot + G(q) = Bu
 
 		// calc matrix H
-		matH(0, 0) = link1.m*link1.lc*link1.lc+link2.m*(link1.l*link1.l+link2.lc*link2.lc+2*link1.l*link2.lc*cos(q2))+link1.I+link2.I;
-		matH(0, 1) = link2.m*(link2.lc*link2.lc+link1.l*link2.lc*2*cos(q2))+link2.I;
+		matH(0, 0) = link1.I + link2.I + link2.m * link1.l * link1.l + 2.0f * link2.m * link1.l * link2.lc * cos(q2);
+		matH(0, 1) = link2.I + link2.m * link1.l * link2.lc * cos(q2);
 		matH(1, 0) = matH(0, 1);
-		matH(1, 1) = link2.m*link2.lc*link2.lc+link2.I;
+		matH(1, 1) = link2.I;
 
 		// calc matrix C
-		vecC(0) = -link2.m*link1.l*link2.lc*sin(q2)*q2_dot*q2_dot-2*link2.m*link1.l*link2.lc*sin(q2)*q2_dot*q1_dot;
-		vecC(1) = link2.m*link1.l*link2.lc*sin(q2)*q1_dot*q1_dot;
-		
+		matC(0, 0) = -2.0f * link2.m * link1.l * link2.lc * sin(q2) * q2_dot;
+		matC(0, 1) = -1.0f * link2.m * link1.l * link2.lc * sin(q2) * q2_dot;
+		matC(1, 0) = link2.m * link1.l * link2.lc * sin(q2) * q1_dot;
+		matC(1, 1) = 0.f;
+
 		// calc vector G
-		vecG(0) = GRAVITY * ((link1.m * link1.lc+link2.m*link1.l) * sin(q1) + link2.m*link2.lc*2*sin(-q1+q2));
-		vecG(1) = GRAVITY * (link2.m * link2.lc * sin(-q1 + q2));
+		vecG(0) = GRAVITY * (link1.m * link1.lc * sin(q1) + link2.m * (link1.l * sin(q2) + link2.lc * sin(q1 + q2)));
+		vecG(1) = GRAVITY * (link2.m * link2.lc * sin(q1 + q2));
 
 		// calc vector C ??
 		// C = C_.dot(qd) + G + array([[b1], [b2]])*qd
-		
+		vecC = matC*vecQdot + vecG + 0.1*vecQdot;
 
 		// calc vector B
 		vecB(0) = 0;
@@ -120,10 +122,6 @@ private: // functions
 			if (fDelQ > PI) fDelQ -= 2 * PI;
 			else if (fDelQ <= -PI) fDelQ += 2 * PI;
 		}
-
-		std::cout << "fQ: " << fQ << std::endl;	
-		std::cout << "fDesQ: " << fDesQ << std::endl;	
-		std::cout << "fDelQ: " << fDelQ << std::endl;	
 		return fDelQ;
 	}
 public: // functions
@@ -166,25 +164,22 @@ public: // functions
 	{
 		calcManipulatorDynamics(vecQ, vecQdot);
 
-		float H22_bar = matH(1, 1) - matH(1, 0) * matH(0, 1) / matH(0, 0) ;
+		float H22_bar = matH(1, 1) - matH(1, 0) / matH(0, 0) * matH(1, 0);
 		if (matH(0, 0) == 0) { H22_bar = 0; }
 
-		float C2_bar = vecC(1) - matH(1, 0) * vecC(0) / matH(0, 0);
+		float C2_bar = vecC(1) - matH(1, 1) / matH(0, 0) * vecC(0);
 		if (matH(0, 0) == 0 || vecC(0) == 0) { C2_bar = 0; }
-
-		float G2_bar = vecC(1) - matH(1, 0) * vecC(0) / matH(0, 0) ;
-		if (matH(0, 0) == 0 || vecC(0) == 0) { G2_bar = 0; }
 
 		float des_q2 = 2 * alpha / PI * atan(vecQdot(0));
 						
 		float v2 = vecDesQddot(1) + kd * (vecDesQdot(1) - vecQdot(1)) + kp* calcErrorState(des_q2, vecQ(1));
 
 		// Bu = H(q)q_ddot + C(q,q_dot)q_dot + G(q)
-		float u = H22_bar*v2 + C2_bar + G2_bar;
+		float u = H22_bar*v2 + C2_bar;
 
-		// std::cout << "vecQdot(1): " << vecQdot(1) << std::endl;
+		 std::cout << "u: " << u << std::endl;		
 
-		std::cout << "u: " << u << std::endl;	
+		
 		return u;
 	}
 	
