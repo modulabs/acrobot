@@ -1,15 +1,22 @@
-Experiment control algorithm using acrobot mechanism
+Experiment control algorithm using acrobot mechanism </br>
 Acrobot is double pendulum mechanism having 1 passive and 1 active joint
 
 ## Introduction
-Acrobot control algorithm implemented.
-In swing-up phase, task space partial feedback linearization used,
-Near origin, lqr used,
+Acrobot control algorithm implemented.</br>
+In swing-up phase, task space partial feedback linearization used,</br>
+Near origin, lqr used,</br>
 Switching between 2 phases, region of attraction algorithm have to be implemented (not yet)
 
 ## Usage
-- Prerequisite
-
+- Prerequisite</br>
+ 1. Install gazebo-ros-pkgs and gazebo-ros-control (might already installed)</br>
+```sh
+sudo apt-get install ros-kinetic-gazebo-ros-pkgs ros-kinetic-gazebo-ros-control
+``` 
+  2. Install effort-controllers for torque-control</br>
+```sh
+sudo apt-get install ros-kinetic-effort-controllers
+```
 - Download and build 
 ```sh
 cd ~/catkin_ws/
@@ -39,8 +46,7 @@ roslaunch acrobot_control acrobot_control_python.launch
 
 
 ## To do
-1. Installation prerequisite
-2. Region of attraction 
+1. Region of attraction 
 
 ## Reference
 1. tedrake lecture
