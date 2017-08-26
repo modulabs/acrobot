@@ -24,7 +24,7 @@ struct Link
 	float I;
 
 	Link() {}
-	Link(float _m, float _l, float _lc, float _Ic, float _b, float _I = 0.f)
+	Link(float _m, float _l, float _lc, float _Ic, float _b)
 		: m(_m), l(_l), lc(_lc), Ic(_Ic), b(_b), I(_Ic+_m*_lc*_lc) {}
 };
 
@@ -97,32 +97,14 @@ private: // functions
 
 	float calcErrorState(float qd, float q)
 	{
-		//float dq = fmodf(qd, 2 * PI) - fmodf(q, 2 * PI);
-		//ROS_INFO("dq = %f", dq);
+		float dq = fmod(qd, 2*PI) - fmod(q, 2*PI);
 
-		//if (dq > PI) dq -= 2 * PI;
-		//else if (dq <= -PI) dq += 2 * PI;
-
-		// error�� ����
-		// ������ �������� �̵��ؾ� �ϱ� ������ �ܼ� error ������ �ƴ϶� �� ���� ������ �����ؾ� ��
-		float fQ = q;
-		while (fabs(fQ) > PI) {
-			if (fQ > PI) fQ -= 2 * PI;
-			else if (fQ <= -PI) fQ += 2 * PI;
-		}
-
-		float fDesQ = qd;
-		while (fabs(fDesQ) > PI) {
-			if (fDesQ > PI) fDesQ -= 2 * PI;
-			else if (fDesQ <= -PI) fDesQ += 2 * PI;
-		}
-
-		float fDelQ = fDesQ - fQ;
-		while (fabs(fDelQ) > PI) {
-			if (fDelQ > PI) fDelQ -= 2 * PI;
-			else if (fDelQ <= -PI) fDelQ += 2 * PI;
-		}
-		return fDelQ;
+		if (dq > PI)
+			dq = dq - 2*PI;
+		else if (dq <= -PI)
+			dq = dq + 2*PI;
+		
+		return dq;
 	}
 public: // functions
 	Acrobot(Link _link1, Link _link2) : link1(_link1), link2(_link2) {}
@@ -177,8 +159,14 @@ public: // functions
 		// Bu = H(q)q_ddot + C(q,q_dot)q_dot + G(q)
 		float u = H22_bar*v2 + C2_bar;
 
-		 std::cout << "u: " << u << std::endl;		
-
+		static int td = 0;
+		
+		if(td==100)
+		{
+			std::cout << "u = " << u << std::endl;
+			td = 0;
+		}
+		td++;
 		
 		return u;
 	}

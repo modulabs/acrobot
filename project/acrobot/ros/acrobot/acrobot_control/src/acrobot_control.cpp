@@ -10,7 +10,7 @@
 #endif
 
 // ������ Ŭ����
-#include "Acrobot_original.h"
+#include "Acrobot.h"
 
 Vector2f vecQ(0, 0);
 Vector2f vecQdot(0, 0);
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "acrobot_control");
 	ros::NodeHandle nh;
-	ros::Rate rate(1000);
+	ros::Rate rate(100);
 
 	// target
 	Vector2f vecDesQ(0, 0);
@@ -42,12 +42,8 @@ int main(int argc, char **argv)
 	Vector2f vecDesQddot(0, 0);
 
 	// Robot
-
-	// Link link1(0.171, 0.377790, 0.27948, 0.0019, 0.1,0);
-	// Link link2(0.253, 0.388200, 0.31992, 0.0019, 0.1,0);
-
-	Link link1(0.1710, 0.377790, 0.27948, 0.0027273, 0.1,0);
-	Link link2(0.289, 0.388200, 0.32843, 0.003348, 0.1,0);
+	Link link1(0.1710, 0.377790, 0.27948, 0.0027273, 0.01);
+	Link link2(0.289, 0.388200, 0.32843, 0.003348, 0.01);
 
 
 	Acrobot acrobot(link1, link2);
@@ -59,8 +55,8 @@ int main(int argc, char **argv)
 
 	// message 
 	std_msgs::Float64 input;
-	ros::Subscriber sub = nh.subscribe("/rrbot/joint_states", 1000, listen_joint_state_callback);
-	ros::Publisher pub = nh.advertise<std_msgs::Float64>("/rrbot/joint2_torque_controller/command", 1000);
+	ros::Subscriber sub = nh.subscribe("/acrobot/joint_states", 1000, listen_joint_state_callback);
+	ros::Publisher pub = nh.advertise<std_msgs::Float64>("/acrobot/joint2_torque_controller/command", 1000);
 	
 	while (ros::ok())
 	{
