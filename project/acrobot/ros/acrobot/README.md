@@ -30,9 +30,9 @@ catkin_make
 chmod +x acrobot_control.py
 ```
 
-- Launch rrbot_gazebo
+- Launch acrobot_gazebo
 ```sh
-roslaunch rrbot_gazebo rrbot_world.launch
+roslaunch acrobot_gazebo acrobot_world.launch
 ```
 
 - Launch acrobot_control
