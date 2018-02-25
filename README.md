@@ -38,5 +38,5 @@ Install effort-controllers for torque-control</br>
 2. [Tedrake paper](http://groups.csail.mit.edu/robotics-center/public_papers/Majumdar13.pdf)
 3. [Spong paper](http://ieeecss.org/CSM/library/1995/feb1995/02-swingupctrlprob.pdf)
 4. sos
-5. [gazebo tutorial] (http://gazebosim.org/tutorials?cat=connect_ros)
-6. [gazebo and ros control] (https://github.com/JoshMarino/gazebo_and_ros_control)
+5. [gazebo tutorial](http://gazebosim.org/tutorials?cat=connect_ros)
+6. [gazebo and ros control](https://github.com/JoshMarino/gazebo_and_ros_control)
