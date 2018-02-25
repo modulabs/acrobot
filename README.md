@@ -29,7 +29,9 @@ Install effort-controllers for torque-control</br>
     $ roslaunch acrobot_gazebo acrobot_world.launch
 
 ## To do
-1. Region of attraction 
+1. write a lqr controller using ros-control
+2. kdl parser and generalize
+3. automatically switching controller using region of attraction algorithm
 
 ## Reference
 1. Tedrake Lecture
