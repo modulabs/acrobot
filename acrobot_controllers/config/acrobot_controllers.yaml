@@ -1,0 +1,12 @@
+acrobot:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Taskspace_pfl_controller ---------------------------------------
+  taskspace_pfl_controller:
+    type: acrobot_controllers/TaskspacePflController
+    joints: 
+      - joint1
+      - joint2

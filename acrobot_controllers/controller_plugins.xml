@@ -1,0 +1,9 @@
+<library path="lib/libacrobot_controllers">
+
+  <class name="acrobot_controllers/TaskspacePflController" type="acrobot_controllers::TaskspacePflController" base_class_type="controller_interface::ControllerBase">
+    <description>
+	    Taskspace Partial Differential Controller
+    </description>
+  </class>
+
+</library>

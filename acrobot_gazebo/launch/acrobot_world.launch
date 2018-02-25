@@ -26,6 +26,6 @@
     args="-urdf -model acrobot -param robot_description"/>
 
   <!-- ros_control acrobot launch file -->
-  <!--include file="$(find acrobot_control)/launch/acrobot_control.launch" /-->
+  <include file="$(find acrobot_controllers)/launch/acrobot_controllers.launch" />
 
 </launch>
