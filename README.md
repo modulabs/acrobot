@@ -20,7 +20,7 @@ Install effort-controllers for torque-control</br>
 ### Download and build 
 
     $ cd ~/catkin_ws/src
-    $ git clone 
+    $ git clone https://github.com/modulabs/gdyn-acrobot
     $ cd ~/catkin_ws/
     $ catkin_make
 
